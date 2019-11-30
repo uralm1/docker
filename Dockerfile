@@ -34,8 +34,8 @@ RUN set -ex; \
   sed -i "/DocumentRoot/Ir _tmp_ttt" /etc/apache2/sites-available/default-ssl.conf; \
   rm _tmp_ttt
 
-EXPOSE 80/tcp
-EXPOSE 443/tcp
+EXPOSE 80 443
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD ["apache2-foreground"]
+# same from phpmyadmin/phpmyadmin
+#ENTRYPOINT [ "/docker-entrypoint.sh" ]
+#CMD ["apache2-foreground"]
