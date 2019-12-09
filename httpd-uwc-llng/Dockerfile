@@ -49,6 +49,7 @@ RUN set -eux; \
   \
 # smoke test
   apache2 -v; \
+  a2enmod headers; \
 # prefer preforking
   a2dismod mpm_event; \
   a2enmod mpm_prefork; \
@@ -56,9 +57,13 @@ RUN set -eux; \
   a2enmod ssl; \
   a2ensite default-ssl; \
   sed -i "s@ssl-cert-snakeoil@u@g" /etc/apache2/sites-available/default-ssl.conf; \
-# enable perl
+# proxy
+  a2enmod proxy; \
+  a2enmod proxy_http; \
+# perl
   a2enmod perl
 
+# FIXME
 COPY u.pem /etc/ssl/certs/
 COPY u.key /etc/ssl/private/
 
