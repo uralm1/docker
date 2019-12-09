@@ -1,7 +1,0 @@
-r
-b
-myadmin-fpm.conf
-config*
-.gitattributes
-.gitignore
-.git
