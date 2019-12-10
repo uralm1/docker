@@ -7,7 +7,25 @@ RUN set -eux; \
     mc \
     apache2 \
     libapache2-mod-perl2 \
-;
+    libapache2-reload-perl \
+    libapache-session-perl \
+    libnet-ldap-perl \
+    libcache-cache-perl \
+    libdbi-perl \
+    libwww-perl \
+    libxml-simple-perl \
+    libsoap-lite-perl \
+    libconfig-inifiles-perl \
+    libcgi-pm-perl \
+    libnet-cidr-lite-perl \
+    libmouse-perl \
+    libcrypt-rijndael-perl \
+    libcrypt-openssl-rsa-perl \
+    libcrypt-openssl-x509-perl \
+    libdigest-hmac-perl \
+    libio-string-perl \
+    libtest-pod-perl \
+    libtest-mockobject-perl
 #  ; \
 #  rm -rf /var/lib/apt/lists/*
 
