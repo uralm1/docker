@@ -37,4 +37,9 @@ for e in "${!APACHE_@}"; do
   fi
 done
 
+# fix LLNG config
+if test -f /etc/lemonldap-ng/handler-apache2.4.conf; then
+  sed -i "s@ServerName reload.*@ServerName reload.`hostname -f`@" /etc/lemonldap-ng/handler-apache2.4.conf
+fi
+
 exec apache2 -DFOREGROUND "$@"

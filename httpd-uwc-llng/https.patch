@@ -1,0 +1,10 @@
+--- https.pm.orig	2019-12-11 10:51:44.069958202 +0000
++++ https.pm	2019-12-11 11:24:43.402943374 +0000
+@@ -21,6 +21,7 @@
+ 	$ssl_opts{SSL_verifycn_scheme} = 'www';
+     }
+     else {
++	$ssl_opts{SSL_verify_mode} = 0;
+ 	if ( $Net::HTTPS::SSL_SOCKET_CLASS eq 'Net::SSL' ) {
+ 		$ssl_opts{SSL_verifycn_scheme} = '';
+ 	} else {

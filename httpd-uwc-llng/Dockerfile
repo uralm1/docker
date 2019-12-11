@@ -5,6 +5,7 @@ RUN set -eux; \
   apt-get install -y --no-install-recommends \
     vim \
     mc \
+    patch \
     apache2 \
     libapache2-mod-perl2 \
     libapache2-reload-perl \
@@ -80,6 +81,28 @@ RUN set -eux; \
   a2enmod proxy_http; \
 # perl
   a2enmod perl
+
+
+# LLNG
+COPY llng.tar.gz /
+COPY https.patch /usr/share/perl5/LWP/Protocol/
+RUN set -eux; \
+  tar -xf llng.tar.gz -C /; \
+  rm -f /llng.tar.gz; \
+  ln -s /etc/lemonldap-ng/handler-apache2.4.conf $APACHE_CONFDIR/conf-available/handler-apache2.4.conf; \
+  a2enconf handler-apache2.4.conf; \
+  { echo ; \
+    echo '		PerlHeaderParserHandler Lemonldap::NG::Handler'; } > _tmp_ttt; \
+  #sed -i "/CustomLog \$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/000-default.conf; \
+  sed -i "/CustomLog \\$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/default-ssl.conf; \
+  rm _tmp_ttt ; \
+# patch to run SOAP calls
+  cd /usr/share/perl5/LWP/Protocol; \
+  patch <https.patch; \
+  rm https.patch; \
+# enable TLSv1
+  sed -i "s@MinProtocol = TLSv1.2@MinProtocol = TLSv1@" /etc/ssl/openssl.cnf
+
 
 # FIXME
 COPY u.pem /etc/ssl/certs/
