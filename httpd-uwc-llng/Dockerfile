@@ -104,7 +104,9 @@ RUN set -eux; \
   sed -i "s@MinProtocol = TLSv1.2@MinProtocol = TLSv1@" /etc/ssl/openssl.cnf
 
 
-# FIXME
+# copy default snakeoil keys
+ENV SSL_CERT /etc/ssl/certs/u.pem
+ENV SSL_KEY /etc/ssl/private/u.key
 COPY u.pem /etc/ssl/certs/
 COPY u.key /etc/ssl/private/
 
