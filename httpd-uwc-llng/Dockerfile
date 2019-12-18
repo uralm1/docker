@@ -3,8 +3,8 @@ FROM debian:buster-slim
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
-    vim \
-    mc \
+    vim-tiny \
+    #mc \
     patch \
     apache2 \
     libapache2-mod-perl2 \
@@ -26,9 +26,9 @@ RUN set -eux; \
     libdigest-hmac-perl \
     libio-string-perl \
     libtest-pod-perl \
-    libtest-mockobject-perl
-#  ; \
-#  rm -rf /var/lib/apt/lists/*
+    libtest-mockobject-perl \
+  ; \
+  rm -rf /var/lib/apt/lists/*
 
 
 ENV APACHE_CONFDIR /etc/apache2
@@ -92,8 +92,8 @@ RUN set -eux; \
   ln -s /etc/lemonldap-ng/handler-apache2.4.conf $APACHE_CONFDIR/conf-available/handler-apache2.4.conf; \
   a2enconf handler-apache2.4.conf; \
   { echo ; \
-    echo '		PerlHeaderParserHandler Lemonldap::NG::Handler'; } > _tmp_ttt; \
-  #sed -i "/CustomLog \$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/000-default.conf; \
+    echo '		#PerlHeaderParserHandler Lemonldap::NG::Handler'; } > _tmp_ttt; \
+  sed -i "/CustomLog \$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/000-default.conf; \
   sed -i "/CustomLog \\$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/default-ssl.conf; \
   rm _tmp_ttt ; \
 # patch to run SOAP calls
