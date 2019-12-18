@@ -75,7 +75,7 @@ RUN set -eux; \
 # enable SSL
   a2enmod ssl; \
   a2ensite default-ssl; \
-  sed -i "s@ssl-cert-snakeoil@u@g" /etc/apache2/sites-available/default-ssl.conf; \
+  sed -i 's/SSLCertificateFile.*/SSLCertificateFile ${SSL_CERT}/; s/SSLCertificateKeyFile.*/SSLCertificateKeyFile ${SSL_KEY}/' /etc/apache2/sites-available/default-ssl.conf; \
 # proxy
   a2enmod proxy; \
   a2enmod proxy_http; \
@@ -93,7 +93,7 @@ RUN set -eux; \
   a2enconf handler-apache2.4.conf; \
   { echo ; \
     echo '		#PerlHeaderParserHandler Lemonldap::NG::Handler'; } > _tmp_ttt; \
-  sed -i "/CustomLog \$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/000-default.conf; \
+  sed -i "/CustomLog \\$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/000-default.conf; \
   sed -i "/CustomLog \\$/Ir _tmp_ttt" $APACHE_CONFDIR/sites-available/default-ssl.conf; \
   rm _tmp_ttt ; \
 # patch to run SOAP calls
