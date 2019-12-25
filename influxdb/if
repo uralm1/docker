@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# same container
+docker exec -it influxdb influx -precision=s
+
+# separate container
+#docker run --rm --link=influxdb -it influxdb:1.7 influx -host influxdb -precision=s

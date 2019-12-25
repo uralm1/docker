@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#docker volume create influxdb
+#  -v /home/sv/src/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro \
+docker run -d -p 8086:8086 --name influxdb \
+  -v /home/sv/src/influxdb_db:/var/lib/influxdb \
+  -v /home/sv/src/influxdb_backups:/backups \
+  -e INFLUXDB_REPORTING_DISABLED=true \
+  influxdb:1.7

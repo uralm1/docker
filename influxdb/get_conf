@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# retrive default configuration file
+docker run --rm influxdb:1.7 influxd config > influxdb.conf
