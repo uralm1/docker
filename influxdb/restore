@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# we must use /backups folder
+docker exec -it influxdb influxd restore -portable -db mydb1 /backups/bak1
+
