@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#docker exec -i mariadb sh -c 'exec mysqldump'
+docker exec mariadb sh -c 'exec mysqldump --all-databases -uroot -ptest' >/srv/mariadb/backups/alldb.sql
+

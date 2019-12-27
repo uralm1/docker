@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# same container
+docker exec -it mariadb mysql -uroot -p
+
+# separate container
+#docker run --rm --link=mariadb -it mariadb:10.4 mysql -hmariadb -uroot -p

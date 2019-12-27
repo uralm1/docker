@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker exec -i mariadb sh -c 'exec mysql -uroot -ptest'</srv/mariadb/backups/_1.sql
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#  -v /home/sv/src/docker/mariadb/conf.d:/etc/mysql/conf.d:ro \
+docker run -d --name mariadb \
+  -v /srv/mariadb/db:/var/lib/mysql \
+  mariadb:10.4
+
+# first time use ... to set root pass (initilization takes nearly 2 minutes - wait!)
+#  -e MYSQL_ROOT_PASSWORD=test \
