@@ -12,18 +12,23 @@ RUN set -eux; \
   ; \
   rm -rf /var/lib/apt/lists/*
 
-ENV DW_DIR /var/www/dokuwiki
+ENV DW_DIR /dokuwiki
 ENV DW_URL https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 
 COPY faq-site.conf /etc/apache2/sites-available/
 COPY index.html /var/www/html/
-COPY phpinfo.php /var/www/html/
+#COPY phpinfo.php /var/www/html/
+
+COPY uwc.tar.gz /
 
 RUN set -eux; \
-  cd /var/www; \
+  cd /; \
   curl -SL $DW_URL | tar -xz; \
-  mv dokuwiki* dokuwiki; \
-  cp dokuwiki/.htaccess.dist dokuwiki/.htaccess; \
+  mv ${DW_DIR}* $DW_DIR; \
+  cp $DW_DIR/.htaccess.dist $DW_DIR/.htaccess; \
+  { echo ; \
+    echo 'php_value upload_max_filesize 16M'; \
+    echo 'php_value post_max_size 16M'; } >> $DW_DIR/.htaccess; \
 # permissions
   chown -R root:root $DW_DIR; \
   chmod 0755 $DW_DIR; \
@@ -39,6 +44,18 @@ RUN set -eux; \
   # conf
   chown -R www-data:www-data $DW_DIR/conf; \
   chown root:root $DW_DIR/conf/.htaccess; \
+# activate rewriting
+  a2enmod rewrite; \
+  sed -i "s/\$conf\['userewrite'\] \+= \+[012];/\$conf['userewrite'] = 1;/" $DW_DIR/conf/dokuwiki.php; \
+# copy defaults to runtime use
+  cp -a $DW_DIR/conf $DW_DIR/conf.dist; \
+  cp -a $DW_DIR/data $DW_DIR/data.dist; \
+# add uwc template
+  tar -xf /uwc.tar.gz -C $DW_DIR/lib/tpl/; \
+  rm /uwc.tar.gz; \
+# tune php
+  sed -i "s/^upload_max_filesize \+=.*/upload_max_filesize = 16M/" /etc/php/7.3/apache2/php.ini; \
+  sed -i "s/^post_max_size \+=.*/post_max_size = 16M/" /etc/php/7.3/apache2/php.ini; \
 # enable site
   a2dissite default-ssl; \
   a2ensite faq-site
@@ -47,6 +64,9 @@ RUN set -eux; \
 #ENV SSL_KEY /etc/ssl/private/u.key
 
 WORKDIR $DW_DIR
+
+VOLUME $DW_DIR/data
+VOLUME $DW_DIR/conf
 
 COPY site-prep /usr/local/bin/
 

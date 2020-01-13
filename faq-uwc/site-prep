@@ -6,3 +6,29 @@ sed -i "s/ServerName .*/ServerName `hostname -f`:443/" /etc/apache2/sites-availa
 
 # fix redir html
 sed -i "s/testserver/`hostname -f`/" /var/www/html/index.html
+
+# dealing with default configurations
+#echo $(id -nu):$(id -ng)
+if [ -f $DW_DIR/conf/dokuwiki.php ]; then
+  echo "Existed configuration found, continue."
+  if [ -z "$(find $DW_DIR/conf -maxdepth 0 -user www-data -group www-data)" ]; then
+    chown -R www-data:www-data $DW_DIR/conf
+    echo "Invalid conf directory ownership has been fixed."
+  fi
+else
+  echo "Creating default configuration directory."
+  cp -a $DW_DIR/conf.dist/* $DW_DIR/conf/
+  chown www-data:www-data $DW_DIR/conf
+fi
+
+if [ -d $DW_DIR/data/pages -o -d $DW_DIR/data/attic -o -d $DW_DIR/data/media ]; then
+  echo "Existed content found, continue."
+  if [ -z "$(find $DW_DIR/data -maxdepth 0 -user www-data -group www-data)" ]; then
+    chown -R www-data:www-data $DW_DIR/data
+    echo "Invalid content directory ownership has been fixed."
+  fi
+else
+  echo "Initializing default content directory."
+  cp -a $DW_DIR/data.dist/* $DW_DIR/data/
+  chown www-data:www-data $DW_DIR/data
+fi
