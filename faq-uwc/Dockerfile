@@ -3,7 +3,7 @@ FROM uralm1/httpd-uwc-llng:latest
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
-    mc \
+    #mc \
     curl \
     php \
     php-curl \
@@ -19,6 +19,7 @@ COPY faq-site.conf /etc/apache2/sites-available/
 COPY index.html /var/www/html/
 #COPY phpinfo.php /var/www/html/
 
+COPY plugins.tar.gz /
 COPY uwc.tar.gz /
 
 RUN set -eux; \
@@ -29,6 +30,12 @@ RUN set -eux; \
   { echo ; \
     echo 'php_value upload_max_filesize 16M'; \
     echo 'php_value post_max_size 16M'; } >> $DW_DIR/.htaccess; \
+# add plugins
+  tar -xf /plugins.tar.gz -C $DW_DIR/lib/plugins/; \
+  rm /plugins.tar.gz; \
+# add uwc template
+  tar -xf /uwc.tar.gz -C $DW_DIR/lib/tpl/; \
+  rm /uwc.tar.gz; \
 # permissions
   chown -R root:root $DW_DIR; \
   chmod 0755 $DW_DIR; \
@@ -50,9 +57,6 @@ RUN set -eux; \
 # copy defaults to runtime use
   cp -a $DW_DIR/conf $DW_DIR/conf.dist; \
   cp -a $DW_DIR/data $DW_DIR/data.dist; \
-# add uwc template
-  tar -xf /uwc.tar.gz -C $DW_DIR/lib/tpl/; \
-  rm /uwc.tar.gz; \
 # tune php
   sed -i "s/^upload_max_filesize \+=.*/upload_max_filesize = 16M/" /etc/php/7.3/apache2/php.ini; \
   sed -i "s/^post_max_size \+=.*/post_max_size = 16M/" /etc/php/7.3/apache2/php.ini; \
