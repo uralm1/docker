@@ -16,6 +16,8 @@ ENV DW_DIR /dokuwiki
 ENV DW_URL https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 
 COPY faq-site.conf /etc/apache2/sites-available/
+COPY ciphers.txt /etc/apache2/mods-available/
+COPY libssl*.deb /
 COPY index.html /var/www/html/
 #COPY phpinfo.php /var/www/html/
 
@@ -60,6 +62,12 @@ RUN set -eux; \
 # tune php
   sed -i "s/^upload_max_filesize \+=.*/upload_max_filesize = 16M/" /etc/php/7.3/apache2/php.ini; \
   sed -i "s/^post_max_size \+=.*/post_max_size = 16M/" /etc/php/7.3/apache2/php.ini; \
+# xp compatibility
+  dpkg -i /libssl1.1-1.1.1d-0+deb10u2.1-amd64.deb; \
+  rm /libssl1.1-1.1.1d-0+deb10u2.1-amd64.deb; \
+  sed -i "s/SSLCipherSuite HIGH/#SSLCipherSuite HIGH/" /etc/apache2/mods-available/ssl.conf; \
+  sed -i "/#SSLCipherSuite HIGH/Ir /etc/apache2/mods-available/ciphers.txt" /etc/apache2/mods-available/ssl.conf; \
+  rm /etc/apache2/mods-available/ciphers.txt; \
 # enable site
   a2dissite default-ssl; \
   a2ensite faq-site
