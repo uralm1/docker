@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CLIENTNAME=CLIENTNAME
+docker run -v /srv/ovpn:/etc/openvpn --rm uralm1/openvpn ovpn_getclient $CLIENTNAME > cl_test.ovpn
+

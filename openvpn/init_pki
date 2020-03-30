@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker run -v /srv/ovpn:/etc/openvpn --rm -it uralm1/openvpn ovpn_initpki
+

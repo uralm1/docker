@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CLIENTNAME=CLIENTNAME
+docker run -v /srv/ovpn:/etc/openvpn --rm -it uralm1/openvpn easyrsa build-client-full $CLIENTNAME nopass
+
