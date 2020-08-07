@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# network for wispa host -- vmware hosts must use ipvlan
+#docker network create -d macvlan --subnet=10.0.0.0/10 --gateway=10.15.0.1 --ip-range=10.14.75.32/28 -o parent=en8ps0 uwcnet
+
+#  -v /etc/ssl/certs/uwc.ufanet.ru.pem:/etc/ssl/certs/u.pem:ro \
+#  -v /etc/ssl/private/uwc.ufanet.ru-key.pem:/etc/ssl/private/u.key:ro \
+
+docker run -d --name test111 \
+  -h test111.uwc.ufanet.ru --network uwcnet --ip 10.14.72.5 \
+  -v /srv/raweb/letsencrypt:/etc/letsencrypt \
+  -v /srv/raweb/letsencrypt-log:/var/log/letsencrypt \
+  -e TZ=Asia/Yekaterinburg \
+  uralm1/httpd-uwc-letsencrypt
+
+#docker exec -it test111 bash
+
+# create configuration in /etc/letsencrypt
+#docker exec -it test111 certbot --apache
+
