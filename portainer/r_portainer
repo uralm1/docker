@@ -6,6 +6,8 @@ docker run -d -p 8000:8000 -p 9000:9000 --restart unless-stopped --name portaine
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc/ssl/certs/uwc.ufanet.ru.pem:/ssl/portainer.pem:ro \
   -v /etc/ssl/private/uwc.ufanet.ru-key.pem:/ssl/portainer.key:ro \
+  --dns=10.14.0.1 \
+  --dns=10.14.0.2 \
   portainer/portainer \
   --ssl --sslcert /ssl/portainer.pem --sslkey /ssl/portainer.key
 
