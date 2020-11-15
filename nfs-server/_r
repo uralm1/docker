@@ -1,0 +1,14 @@
+#!/bin/bash
+
+docker run -d --restart unless-stopped --name nfs-server \
+  -v /srv/nfs-server/e:/e \
+  -e NFS_EXPORT_0='/e 10.14.0.25(ro,no_subtree_check,fsid=0,sync) 10.14.0.27(ro,no_subtree_check,fsid=0,sync) 10.15.0.31(ro,no_subtree_check,fsid=0,sync)' \
+  -e NFS_EXPORT_1='/e/share1 10.14.0.25(rw,no_subtree_check,sync) 10.15.0.31(rw,no_subtree_check,sync)' \
+  -e NFS_EXPORT_2='/e/share2 10.14.0.27(rw,no_subtree_check,sync) 10.15.0.31(rw,no_subtree_check,sync)' \
+  -e NFS_DISABLE_VERSION_3=1 \
+  --cap-add SYS_ADMIN \
+  -p 2049:2049 \
+  -p 111:111 -p 111:111/udp \
+  --security-opt apparmor=erichough-nfs \
+  -e TZ=Asia/Yekaterinburg \
+  erichough/nfs-server

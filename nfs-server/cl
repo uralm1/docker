@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# client requires nfs-common package
+
+# fstab example
+# 10.14.73.5:/share1 /mnt/share1 nfs4 auto 0 0
+# 10.14.73.5:/share2 /mnt/share2 nfs4 auto 0 0
+
+# client mount example
+mount -t nfs4 10.14.73.5:/ /mnt/nfs-test
+
+mount -t nfs4 10.14.73.5:/share1 /mnt/share1
+mount -t nfs4 10.14.73.5:/share2 /mnt/share2
