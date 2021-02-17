@@ -6,15 +6,10 @@
 #  -v /etc/ssl/certs/uwc.ufanet.ru.pem:/etc/ssl/certs/u.pem:ro \
 #  -v /etc/ssl/private/uwc.ufanet.ru-key.pem:/etc/ssl/private/u.key:ro \
 
-docker run -d --name test111 \
-  -h test111.uwc.ufanet.ru --network uwcnet --ip 10.14.72.8 \
-  -v /srv/raweb/letsencrypt:/etc/letsencrypt \
-  -v /srv/raweb/letsencrypt-log:/var/log/letsencrypt \
+docker run -d --name test110 \
+  -h test110.uwc.ufanet.ru --network uwcnet --ip 10.14.72.7 \
   -e TZ=Asia/Yekaterinburg \
-  uralm1/httpd-uwc-letsencrypt
+  uralm1/httpd-uwc
 
-#docker exec -it test111 bash
-
-# create configuration in /etc/letsencrypt
-#docker exec -it test111 certbot --apache
+#docker exec -it test110 bash
 
