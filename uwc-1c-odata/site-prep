@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+# fix site config
+sed -i "s/ServerName .*/ServerName `hostname -f`:443/" /etc/apache2/sites-available/1c-site.conf
+
+# add current base connection to default.vrd
+echo "Setting connection to infobase."
+sed -i 's@base=".\+"@base="'"$WSDIR"'"@' $PUB_ROOT/default.vrd
+sed -i 's@ib=".\+"@ib="'"$CONNSTR"'"@' $PUB_ROOT/default.vrd
+# use alias if needed
+if [ -n "$WSDIR" -a "$WSDIR" != "/" ]
+then
+  echo "Setting alias to $WSDIR."
+  sed -i 's@#\?Alias .\+$@Alias "'"$WSDIR"'" ${PUB_ROOT}@' /etc/apache2/sites-available/1c-site.conf
+else
+  echo "Removing alias."
+  sed -i 's@#\?Alias .\+$@#Alias "/notused" ${PUB_ROOT}@' /etc/apache2/sites-available/1c-site.conf
+fi
+# publish web-app
+if [ -n "$PUBAPP" -a "$PUBAPP" != "false" ]
+then
+  echo "Enable 1c web-application."
+  sed -i 's@^ *enable=".\+">@  enable="true">@' $PUB_ROOT/default.vrd
+else
+  echo "Disable 1c web-application."
+  sed -i 's@^ *enable=".\+">@  enable="false">@' $PUB_ROOT/default.vrd
+fi
+# publish odata
+if [ -n "$PUBODATA" -a "$PUBODATA" != "false" ]
+then
+  echo "Enable odata interface."
+  sed -i 's@standardOdata \+enable=".\+"@standardOdata enable="true"@' $PUB_ROOT/default.vrd
+else
+  echo "Disable odata interface."
+  sed -i 's@standardOdata \+enable=".\+"@standardOdata enable="false"@' $PUB_ROOT/default.vrd
+fi

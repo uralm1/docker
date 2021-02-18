@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<point xmlns="http://v8.1c.ru/8.2/virtual-resource-system"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  base="/buhbase"
+  ib="Srvr=serv1c;Ref=buhbase"
+  enable="true">
+  <ws enable="false"
+    pointEnableCommon="false">
+  </ws>
+  <httpServices publishByDefault="false">
+  </httpServices>
+  <standardOdata enable="true"
+    reuseSessions="autouse"
+    sessionMaxAge="20"
+    poolSize="10"
+    poolTimeout="5"/>
+  <analytics enable="false"/>
+</point>

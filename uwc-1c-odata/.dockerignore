@@ -1,0 +1,10 @@
+_r
+_b
+_download_itc
+_extract_itc
+*.tmp
+*.tar.gz
+*.deb
+!*ws_*.deb
+!*common_*.deb
+files_needed

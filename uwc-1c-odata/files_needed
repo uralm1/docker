@@ -1,0 +1,6 @@
+Put 1C package files here:
+
+1c-enterprise-8.3.x.x-ws_8.3.x-x_amd64.deb
+1c-enterprise-8.3.x.x-common_8.3.x-x_amd64.deb
+
+You can use _download_itc and _extract_itc scripts for that.

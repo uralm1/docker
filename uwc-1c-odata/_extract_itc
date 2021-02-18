@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tar -x -v --wildcards -f deb64.tar.gz *ws_*.deb *common_*.deb

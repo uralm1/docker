@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# network for wispa host -- vmware hosts must use ipvlan
+#docker network create -d macvlan --subnet=10.0.0.0/10 --gateway=10.15.0.1 --ip-range=10.14.75.32/28 -o parent=eth0 uwcnet
+
+#  -v /etc/ssl/certs/uwc.ufanet.ru.pem:/etc/ssl/certs/u.pem:ro \
+#  -v /etc/ssl/private/uwc.ufanet.ru-key.pem:/etc/ssl/private/u.key:ro \
+
+# CONNSTR options: Srvr,Ref,Usr,Pwd
+
+docker run -d --name adup-1c-odata \
+  --hostname adup-1c-odata --domainname uwc.local \
+  --network uwcnet --ip 10.14.72.7 \
+  -e WSDIR="/buhbase" \
+  -e CONNSTR="Srvr=ssss;Ref=buhbase1" \
+  -e PUBAPP="true" \
+  -e PUBODATA="true" \
+  -e TZ=Asia/Yekaterinburg \
+  uralm1/uwc-1c-odata
