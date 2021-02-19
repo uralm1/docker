@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# enter your login and password
 ITC_LOGIN=''
 ITC_PASS=''
 
@@ -13,11 +14,17 @@ echo 'Logging in...'
 curl -s -k -c ccc1.tmp "$login_url" | sed -n '/execution/{s/.*name="execution" \+value="\([a-zA-Z0-9_\-]\+\)"\/>.*/\1/;p}' > ex.tmp
 curl -k -b ccc1.tmp -c ccc2.tmp -d "username=$ITC_LOGIN&password=$ITC_PASS&_eventId=submit" --data-urlencode execution@ex.tmp "$login_url"
 rm -f ex.tmp
+
+# outdated download code - not working
+#echo 'Downloading file...'
+#curl -# -L -b ccc2.tmp -o deb64.tar.gz "$dl_url"
+
+# 18.02.21 !latest download code here
 echo 'Obtaining link to file...'
-curl -# -L -b ccc2.tmp "$dl_url" | sed -n '/Скачать дистрибутив/{s/.*<a href="\(https:[a-zA-Z0-9_\/\.\-]\+\)">.*/\1/;p;q}' > link.tmp 
+curl -# -L -b ccc2.tmp "$dl_url" | sed -n '/Скачать дистрибутив/{s/.*<a href="\(https:[a-zA-Z0-9_\/\.\-]\+\)">.*/\1/;p;q}' > link.tmp
 echo 'Downloading file...'
-#wget -c --load-cookies ccc2.tmp -i ex.tmp -O deb64.tar.gz
 xargs -n 1 curl -# -L -b ccc2.tmp -o deb64.tar.gz < link.tmp
+
 rm -f ccc1.tmp ccc2.tmp
 rm -f link.tmp
 

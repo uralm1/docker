@@ -7,4 +7,7 @@ _extract_itc
 *.deb
 !*ws_*.deb
 !*common_*.deb
+!*server_*.deb
 files_needed
+license-tools
+cert

@@ -1,25 +1,25 @@
 FROM uralm1/httpd-uwc:latest
 
 ###
-RUN set -eux; \
-  apt-get update; \
-  apt-get install -y --no-install-recommends \
-    libunwind8 \
-  ; \
-  rm -rf /var/lib/apt/lists/*
+#RUN set -eux; \
+#  apt-get update; \
+#  apt-get install -y --no-install-recommends \
+#    libunwind8 \
+#  ; \
+#  rm -rf /var/lib/apt/lists/*
 ###
 
 ENV PUB_ROOT /1c-pub
 ENV PLATFORM_VER "8.3.18.1208"
-# this meant to be replaced in cmdline
+# next meant to be replaced in cmdline
 ENV WSDIR "/buhbase"
 ENV CONNSTR "Srvr=serv1c;Ref=buhbase"
 ENV PUBAPP "true"
 ENV PUBODATA "true"
+ENV SSL_VERIFYCLIENT "none"
 
 
-COPY *ws_*.deb /
-COPY *common_*.deb /
+COPY *ws_*.deb *common_*.deb *server_*.deb /
 COPY 1c-site.conf /etc/apache2/sites-available/
 COPY _1cws.load /etc/apache2/mods-available/
 COPY index.html /var/www/html/
@@ -29,7 +29,8 @@ RUN set -eux; \
   cd /; \
   dpkg -i *common_*.deb; \
   dpkg -i *ws_*.deb; \
-  rm *ws_*.deb *common_*.deb; \
+  dpkg -i *server_*.deb; \
+  rm *ws_*.deb *common_*.deb *server_*.deb; \
   mkdir -p $PUB_ROOT; \
 # permissions
   chown -R root:root $PUB_ROOT; \
@@ -42,8 +43,9 @@ RUN set -eux; \
   a2dissite default-ssl; \
   a2ensite 1c-site
 
-#ENV SSL_CERT /etc/ssl/certs/u.pem
-#ENV SSL_KEY /etc/ssl/private/u.key
+ENV SSL_CA /etc/ssl/certs/ca.pem
+ENV SSL_CERT /etc/ssl/certs/u.pem
+ENV SSL_KEY /etc/ssl/private/u.key
 
 WORKDIR $PUB_ROOT
 

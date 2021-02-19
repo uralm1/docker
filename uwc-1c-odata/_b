@@ -1,3 +1,4 @@
 #/bin/bash
 
-docker build -t uralm1/uwc-1c-odata .
+#docker build -t uralm1/uwc-1c-odata .
+docker build --squash -t uralm1/uwc-1c-odata .

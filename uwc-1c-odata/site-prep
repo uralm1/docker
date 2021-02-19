@@ -1,37 +1,46 @@
 #!/bin/bash
 set -e
 
-# fix site config
+# fix ServerName
 sed -i "s/ServerName .*/ServerName `hostname -f`:443/" /etc/apache2/sites-available/1c-site.conf
+# enable/disable SSLCACertificateFile directive
+if [ -r "$SSL_CA" ]
+then
+  # enable
+  sed -i 's@#\?SSLCACertificateFile .\+$@SSLCACertificateFile ${SSL_CA}@' /etc/apache2/sites-available/1c-site.conf
+else
+  # disable
+  sed -i 's@#\?SSLCACertificateFile .\+$@#SSLCACertificateFile ${SSL_CA}@' /etc/apache2/sites-available/1c-site.conf
+fi
 
 # add current base connection to default.vrd
-echo "Setting connection to infobase."
+echo "*Setting connection to infobase."
 sed -i 's@base=".\+"@base="'"$WSDIR"'"@' $PUB_ROOT/default.vrd
 sed -i 's@ib=".\+"@ib="'"$CONNSTR"'"@' $PUB_ROOT/default.vrd
 # use alias if needed
 if [ -n "$WSDIR" -a "$WSDIR" != "/" ]
 then
-  echo "Setting alias to $WSDIR."
+  echo "*Setting alias to $WSDIR."
   sed -i 's@#\?Alias .\+$@Alias "'"$WSDIR"'" ${PUB_ROOT}@' /etc/apache2/sites-available/1c-site.conf
 else
-  echo "Removing alias."
+  echo "*Removing alias."
   sed -i 's@#\?Alias .\+$@#Alias "/notused" ${PUB_ROOT}@' /etc/apache2/sites-available/1c-site.conf
 fi
 # publish web-app
 if [ -n "$PUBAPP" -a "$PUBAPP" != "false" ]
 then
-  echo "Enable 1c web-application."
+  echo "*Enable 1c web-application."
   sed -i 's@^ *enable=".\+">@  enable="true">@' $PUB_ROOT/default.vrd
 else
-  echo "Disable 1c web-application."
+  echo "*Disable 1c web-application."
   sed -i 's@^ *enable=".\+">@  enable="false">@' $PUB_ROOT/default.vrd
 fi
 # publish odata
 if [ -n "$PUBODATA" -a "$PUBODATA" != "false" ]
 then
-  echo "Enable odata interface."
+  echo "*Enable odata interface."
   sed -i 's@standardOdata \+enable=".\+"@standardOdata enable="true"@' $PUB_ROOT/default.vrd
 else
-  echo "Disable odata interface."
+  echo "*Disable odata interface."
   sed -i 's@standardOdata \+enable=".\+"@standardOdata enable="false"@' $PUB_ROOT/default.vrd
 fi
