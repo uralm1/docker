@@ -10,7 +10,7 @@ FROM uralm1/httpd-uwc:latest
 ###
 
 ENV PUB_ROOT /1c-pub
-ENV PLATFORM_VER "8.3.18.1208"
+ENV PLATFORM_VER "8.3.18.1363"
 # next meant to be replaced in cmdline
 ENV WSDIR "/buhbase"
 ENV CONNSTR "Srvr=serv1c;Ref=buhbase"
