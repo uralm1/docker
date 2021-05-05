@@ -5,7 +5,7 @@
 DAYS_CA=5475
 DAYS=1825
 SERVERS=( adup-1c-odata wispa )
-IPS=( 10.14.72.8 10.15.0.31 )
+IPS=( 10.14.72.9 10.15.0.31 )
 
 # gen CA key (give a password)
 #openssl genrsa -aes256 -out ca-key.pem 4096

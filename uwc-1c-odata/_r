@@ -8,7 +8,7 @@
 
 docker run -d --name adup-1c-odata \
   --hostname adup-1c-odata --domainname uwc.local \
-  --network uwcnet --ip 10.14.72.8 \
+  --network uwcnet --ip 10.14.72.9 \
   -e WSDIR="/buhbase" \
   -e CONNSTR="Srvr=ssss;Ref=buhbase1" \
   -e PUBAPP="true" \
