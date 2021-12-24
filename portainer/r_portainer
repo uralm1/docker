@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #docker volume create portainer_data
-docker run -d -p 8000:8000 -p 9000:9000 --restart unless-stopped --name portainer \
+docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --restart unless-stopped --name portainer \
   -v portainer_data:/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /etc/ssl/certs/uwc.ufanet.ru.pem:/ssl/portainer.pem:ro \
@@ -9,5 +9,5 @@ docker run -d -p 8000:8000 -p 9000:9000 --restart unless-stopped --name portaine
   --dns=10.14.0.1 \
   --dns=10.14.0.2 \
   portainer/portainer-ce \
-  --ssl --sslcert /ssl/portainer.pem --sslkey /ssl/portainer.key
+  --sslcert /ssl/portainer.pem --sslkey /ssl/portainer.key
 
